@@ -1,5 +1,5 @@
-#ifndef EMPRESA_H
-#define EMPRESA_H
+#ifndef CADASTRO_H
+#define CADASTRO_H
 
 #include <iostream>
 #include <vector>
@@ -21,6 +21,6 @@ class Cadastro{
       std::vector<std::string> Password;
 };
 
-#include "empresa_.cpp"
+#include "cadastro_.cpp"
 
 #endif
