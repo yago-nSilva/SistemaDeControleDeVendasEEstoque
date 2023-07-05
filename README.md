@@ -25,3 +25,22 @@ operações de negócios, aumentar a eficiência e evitar erros comuns no contro
 
 # Tecnologias Utilizadas 
 - C++
+# Como executar o projeto 
+
+```bash
+# clonar repositório
+
+git clone https://github.com/yago-nSilva/SistemaDeControleDeVendasEEstoque
+
+# entrar na pasta do projeto 
+
+
+# executar o projeto
+
+```
+
+# Autores 
+- Bernardo Martins de Castro Rossetti
+- Bruno Henrique Rodrigues Campos
+- Marcos Paulo Gomes Rodrigues
+- Yago Victor Nascimento Silva
