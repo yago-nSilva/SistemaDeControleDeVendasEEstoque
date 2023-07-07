@@ -1,6 +1,3 @@
-#include "Verificador.hpp"
-#include <iostream>
-
 Verificador::Verificador(const std::string& arquivo) : _nomeArquivo(arquivo) {
   abrirArquivo();
 }
@@ -43,7 +40,7 @@ std::string Verificador::linhaEncontrada(const std::string& palavra) {
   if (encontrada) {
     return linha;
   } else {
-    return "Palavra não encontrada.";
+    return "Palavra nao encontrada.";
   }
 }
 
@@ -73,7 +70,7 @@ std::string Verificador::proxLinha(const std::string& palavra) {
   if(encontrada && proxLinha) {
     return linha; 
   } else {
-    return "Linha não encontrada.";
+    return "Linha nao encontrada.";
   }
 }
   
