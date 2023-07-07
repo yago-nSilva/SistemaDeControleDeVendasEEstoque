@@ -7,7 +7,7 @@
 Produto::Produto(const std::string& nome, const std::string& codigo, const std::string& categoria, double preco, const std::string& unidade, int quantidade) : _nome(nome), _codigo(codigo), _categoria(categoria), _preco(preco), _unidade(unidade), _quantidade(quantidade) {
       
       if (quantidade <= 0) {
-        throw std::invalid_argument ("A quantidade do produto deve ser um número inteiro                                                   positivo");
+        throw std::invalid_argument ("A quantidade do produto deve ser um número inteiro positivo");
       }
       if (unidade != "un" && unidade != "cx") {
         throw std::invalid_argument("A unidade do produto deve ser 'un' ou 'cx'.");
