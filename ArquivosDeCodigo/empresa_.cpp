@@ -56,6 +56,3 @@ bool UserFile::doesuserfileExists(std::string const namefile){
 
   return file.is_open();
 }
-
-
-
