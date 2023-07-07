@@ -27,20 +27,23 @@ private:
   std::vector<std::string> Password;
 };
 
+
 class FileAux
 {
 public:
 
-  std::string turnintoNamefile(std::string namefile);
+  void turnintoNamefile(std::string *pointerto_namefile, std::string namefile);
 
   virtual bool createFile(std::string const namefile) = 0;
   virtual bool writeonFile(std::string username, std::string password) = 0;
-  virtual void searchonFile(std::string* search_username_ptr, std::string &search_username) = 0;
+  virtual void verifyFile(std::string* search_username_ptr, std::string &search_username) = 0;
+  virtual bool searchonFile(std::string user_data) = 0;
 
 protected:
   std::string marker_ = "-------------------";
 
 };
+
 
 class LoginFile : public FileAux
 {
@@ -49,7 +52,7 @@ public:
 
   bool isfileOpen(std::string const namefile);
 
-  bool createFile (std::string const namefile) override{
+  virtual bool createFile (std::string const namefile) override{
   _file.open(namefile, std::ios::out);
 
   _file << "-- Dados de login --"
@@ -99,13 +102,13 @@ public:
     return true;
   }
 
-  virtual void searchonFile(std::string* search_username_ptr, std::string &search_username) override{
+  virtual void verifyFile(std::string* search_username_ptr, std::string &search_username) override{
     
     _file.open("login.txt", std::ios::in);
 
     std::string line;
     std::string username_string = "User: " + *search_username_ptr + " // ";
-    
+  
     while (getline(_file, line)){
 
       if (line == username_string){
@@ -121,17 +124,100 @@ public:
 
         }
 
-        break;
+        _file.seekg(0, std::ios::beg);
       }
     }
 
     _file.close();
   }
+      
+  virtual bool searchonFile(std::string user_data) override{
+        
+    std::string line;
+    std::string file_username = "User: " + user_data + " // ";
+    
+    _file.open("login.txt", std::ios::in);
+    _file.seekg(0, std::ios::beg);
 
-private:
+    while(getline(_file, line)){
+        if (file_username == line){
+
+          _file.seekg(0, std::ios::beg);
+          _file.close();
+
+            return true;
+        }
+    }
+
+    _file.seekg(0, std::ios::beg);
+    _file.close();
+
+    std::cout << "-- Nome de usuario nao encontrado --" 
+            << std::endl;
+
+    return false;
+        
+  }
+
+protected:
   std::fstream _file;
 };
 
+
+class UserFile : public LoginFile
+{
+
+public:
+
+  bool doesuserfileExists(std::string const namefile);
+
+  virtual bool createFile (std::string const namefile) override{
+
+    std::string username = namefile;
+    username.erase(username.length() - 4 );
+
+    _userfile.open(namefile, std::ios::app);
+
+    _userfile << "Usuário: " << username;
+
+    _userfile.close();
+  }
+
+
+  virtual bool searchonFile(std::string user_data) override{
+    
+    std::string password = "Senha: " + user_data;
+
+    std::string line;
+    _file.open("login.txt", std::ios::in);
+
+    while(getline(_file, line)){
+      if (line == password){
+        std::cout << "Senha Correta!"
+                << std::endl;
+        std::cout << "-- Logando --"
+                << std::endl;
+
+        _file.seekg(0, std::ios::beg);
+        _file.close();
+
+        return true;
+      }
+    }
+
+    std::cout << "Senha incorreta!"
+            << std::endl;
+
+    _file.seekg(0, std::ios::beg);
+    _file.close();
+    
+    return false;
+
+  }
+
+private:
+  std::fstream _userfile;
+};
 
 #include "empresa_.cpp"
 
