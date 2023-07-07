@@ -37,7 +37,7 @@ public:
   virtual bool createFile(std::string const namefile) = 0;
   virtual bool writeonFile(std::string username, std::string password) = 0;
   virtual void verifyFile(std::string* search_username_ptr, std::string &search_username) = 0;
-  virtual bool searchonFile(std::string user_data) = 0;
+  virtual bool searchonFile(std::string username, std::string password) = 0;
 
 protected:
   std::string marker_ = "-------------------";
@@ -131,10 +131,10 @@ public:
     _file.close();
   }
       
-  virtual bool searchonFile(std::string user_data) override{
+  virtual bool searchonFile(std::string username, std::string password) override{
         
     std::string line;
-    std::string file_username = "User: " + user_data + " // ";
+    std::string file_username = "User: " + username + " // ";
     
     _file.open("login.txt", std::ios::in);
     _file.seekg(0, std::ios::beg);
@@ -181,27 +181,35 @@ public:
     _userfile << "Usuário: " << username;
 
     _userfile.close();
+
+    return true;
   }
 
 
-  virtual bool searchonFile(std::string user_data) override{
+  virtual bool searchonFile(std::string username, std::string password) override{
     
-    std::string password = "Senha: " + user_data;
-
+    std::string user_on_file = "User: " + username + " // ";
+    std::string password_on_file = "Senha: " + password;
+    
     std::string line;
     _file.open("login.txt", std::ios::in);
 
     while(getline(_file, line)){
-      if (line == password){
-        std::cout << "Senha Correta!"
+
+      if (line == user_on_file){
+        if (getline(_file, line)){
+          if (line == password_on_file){
+            std::cout << "Senha Correta!"
                 << std::endl;
-        std::cout << "-- Logando --"
+            std::cout << "-- Logando --"
                 << std::endl;
 
-        _file.seekg(0, std::ios::beg);
-        _file.close();
+            _file.seekg(0, std::ios::beg);
+            _file.close();
 
-        return true;
+            return true;
+          }
+        }
       }
     }
 
