@@ -1,4 +1,6 @@
 #include "empresa.hpp"
+// #include "produto.hpp"
+// #include "verificador.hpp"
 
 #include <iostream>
 #include <vector>
@@ -64,8 +66,7 @@ while(loop == 0){
                 std::cout << "Digite o nome de usuario: ";
                 std::cin >> username;
 
-                //login_file.searchonFile(username);
-                userexists_verify = login_file.searchonFile(username);
+                userexists_verify = login_file.searchonFile(username, password);
                 if (!userexists_verify){
                         while (!userexists_verify){
                                 std::cout << "------------------------"
@@ -83,7 +84,7 @@ while(loop == 0){
                                 if (second_choice == 1){
                                         std::cout << "Digite o nome de usuario: ";
                                         std::cin >> username;
-                                        userexists_verify = login_file.searchonFile(username);
+                                        userexists_verify = login_file.searchonFile(username, password);
                                 }
                                 else {
                                         std::cout << "saindo"
@@ -95,6 +96,7 @@ while(loop == 0){
 
                 userfile_name = username;
                 user_filename_ptr = &userfile_name;
+                
 
                 user_file.turnintoNamefile(user_filename_ptr, userfile_name);
 
@@ -109,7 +111,7 @@ while(loop == 0){
 
                         std::cout << "Digite a senha: ";
                         std::cin >> password;
-                        correct_password = user_file.searchonFile(password);
+                        correct_password = user_file.searchonFile(username, password);
 
                         if (correct_password == true){
                                 std::cout << "-- Voce esta logado como: " << username
@@ -135,7 +137,7 @@ while(loop == 0){
                                         std::cout << "Digite a senha novamente: ";
                                         
                                         std::cin >> password;
-                                        correct_password = user_file.searchonFile(password);
+                                        correct_password = user_file.searchonFile(username, password);
 
                                         if (correct_password == true){
                                                 std::cout << "-- Voce esta logado como: " << username
@@ -155,8 +157,6 @@ while(loop == 0){
                                         }
 
                                 }
-
-
 
                         }
 
@@ -226,7 +226,11 @@ while(loop == 0){
 
                 std::cout << "Digite 0 para continuar: ";
                 std::cin >> continue_choice;
-                if (continue_choice != '0') loop =  1;
+                if (continue_choice == '0'){
+                        break;
+                }
+                
+                loop =  1;
 
             
                 std::cout << "Saindo..." << std::endl;
@@ -244,6 +248,6 @@ while(loop == 0){
                         << std::endl;
         break;
 
-        }
-    }
+   }
+ }
 }
