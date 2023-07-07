@@ -8,7 +8,6 @@
 #include <cstdlib> // Limpar o terminal
 #include <fstream>
 
-
 #define MARKER "------------------------"
 
 int main() {
@@ -22,6 +21,7 @@ std::string userfile_name;
 
 std::string const login_filename = "login.txt";
 
+// Verificar se o arquivo de login existe, caso contrário, criá-lo
 if (!login_file.isfileOpen(login_filename)){
         std::cout << "arquivo existe" << std::endl;
         login_file.createFile(login_filename);
@@ -45,42 +45,32 @@ bool correct_password;
 
 while(loop == 0){     
 
-    std::cout << MARKER
-            << std::endl;
-    std::cout << "Escolha uma das opcoes" 
-            << std::endl;
-    std::cout << "1 - Login" 
-            << std::endl;
-    std::cout << "2 - Cadastro" 
-            << std::endl;
-    std::cout << "3 - Sair"
-            << std::endl;
-    std::cout << MARKER
-            << std::endl;
+    std::cout << MARKER << std::endl;
+    std::cout << "Escolha uma das opcoes" << std::endl;
+    std::cout << "1 - Login" << std::endl;
+    std::cout << "2 - Cadastro" << std::endl;
+    std::cout << "3 - Sair" << std::endl;
+    std::cout << MARKER << std::endl;
     
     std::cin >> choice;
 
     switch(choice){
         case '1':
                 unsigned int second_choice;
-                std::cout << "-- Fazendo login --"
-                        << std::endl;
+                std::cout << "-- Fazendo login --" << std::endl;
                 std::cout << "Digite o nome de usuario: ";
                 std::cin >> username;
 
+                // Verificar se o usuário existe no arquivo de login
                 userexists_verify = login_file.searchonFile(username, password);
+
                 if (!userexists_verify){
                         while (!userexists_verify){
-                                std::cout << MARKER
-                                        << std::endl;
-                                std::cout << "Escolha uma das opcoes"
-                                        << std::endl;
-                                std::cout << "1 - Digitar outro nome de usuario"
-                                        << std::endl;
-                                std::cout << "2 - Sair"
-                                        << std:: endl;
-                                std::cout << MARKER
-                                        << std::endl;
+                                std::cout << MARKER << std::endl;
+                                std::cout << "Escolha uma das opcoes" << std::endl;
+                                std::cout << "1 - Digitar outro nome de usuario" << std::endl;
+                                std::cout << "2 - Sair" << std:: endl;
+                                std::cout << MARKER << std::endl;
                                 std::cin >> second_choice;
 
                                 if (second_choice == 1){
@@ -89,8 +79,7 @@ while(loop == 0){
                                         userexists_verify = login_file.searchonFile(username, password);
                                 }
                                 else {
-                                        std::cout << "saindo"
-                                                << std::endl;
+                                        std::cout << "saindo" << std::endl;
                                         break;
                                 }
                         }
@@ -98,16 +87,14 @@ while(loop == 0){
 
                 userfile_name = username;
                 user_filename_ptr = &userfile_name;
-                
 
+                // Transformar o nome do usuário em um nome de arquivo
                 user_file.turnintoNamefile(user_filename_ptr, userfile_name);
 
                 if (userexists_verify == true){
                         if(!user_file.doesuserfileExists(userfile_name)){
-                                std::cout << "-- Arquivo nao existe --" 
-                                        << std::endl;
-                                std::cout << "-- Criando arquivo --"
-                                        << std::endl;
+                                std::cout << "-- Arquivo nao existe --" << std::endl;
+                                std::cout << "-- Criando arquivo --" << std::endl;
                                 user_file.createFile(userfile_name);
                         }
 
@@ -116,68 +103,45 @@ while(loop == 0){
                         correct_password = user_file.searchonFile(username, password);
 
                         if (correct_password == true){
-                                std::cout << "-- Voce esta logado como: " << username
-                                        << std::endl;
+                                std::cout << "-- Voce esta logado como: " << username << std::endl;
 
                                 productRegister(userfile_name);
 
                         }       
 
                         if (!correct_password){
-
                                 char incorrect_password_choice;
-                                std::cout << MARKER
-                                        << std::endl;
-                                std::cout << "1 - Deseja digitar a senha novamente? "
-                                        << std::endl;
-                                std::cout << "'S' - Sim // 'N' - Nao"
-                                        << std::endl;
+                                std::cout << MARKER << std::endl;
+                                std::cout << "1 - Deseja digitar a senha novamente? " << std::endl;
+                                std::cout << "'S' - Sim // 'N' - Nao" << std::endl;
                                 std::cin >> incorrect_password_choice;
-
-                                std::cout << MARKER
-                                        << std::endl;
+                                std::cout << MARKER << std::endl;
 
                                 while ((incorrect_password_choice == 's') || (incorrect_password_choice == 'S')){
-
                                         std::cout << "Digite a senha novamente: ";
-                                        
                                         std::cin >> password;
                                         correct_password = user_file.searchonFile(username, password);
 
                                         if (correct_password == true){
-                                                std::cout << "-- Voce esta logado como: " << username
-                                                        << std::endl;
-
+                                                std::cout << "-- Voce esta logado como: " << username << std::endl;
                                                 productRegister(userfile_name);
-
                                                 break;
-                                                
                                         }
 
                                         if(!correct_password){
-                                                std::cout << "1 - Deseja digitar a senha novamente? "
-                                                        << std::endl;
-                                                  std::cout << "'S' - Sim // 'N' - Nao"
-                                                	<< std::endl;
-
+                                                std::cout << "1 - Deseja digitar a senha novamente? " << std::endl;
+                                                std::cout << "'S' - Sim // 'N' - Nao" << std::endl;
                                                 std::cin >> incorrect_password_choice;
-                                                std::cout << MARKER
-                                                        << std::endl;
+                                                std::cout << MARKER << std::endl;
                                         }
-
-
                                 }
-
                         }
-
                 }
 
         break;
 
         case '2':
-            
-                std::cout << "-- Fazendo cadastro --"
-                        << std::endl;
+                std::cout << "-- Fazendo cadastro --" << std::endl;
 
                 std::cout << "Digite o nome de usuario: ";
                 std::cin >> username;
@@ -195,44 +159,30 @@ while(loop == 0){
 
                 for (unsigned int i = 0; i < 1; i++){    
                         if (confirmation_password != password){
-
-                                std::cout << "-- SENHA ERRADA --" 
-                                        << std::endl;
-                                std::cout << "-- CONFIRME A SENHA NOVAMENTE --" 
-                                         << std::endl;
+                                std::cout << "-- SENHA ERRADA --" << std::endl;
+                                std::cout << "-- CONFIRME A SENHA NOVAMENTE --" << std::endl;
                                 std::cout << "Digite a senha: ";
                                 std::cin >> confirmation_password;
 
                                 if (confirmation_password != password){
-                                        std::cout << "-- SENHA ERRADA --"
-                                                << std::endl;
-                                        std::cout << "-- REALIZE O CADASTRO NOVAMENTE --"
-                                                << std::endl;
-                                
+                                        std::cout << "-- SENHA ERRADA --" << std::endl;
+                                        std::cout << "-- REALIZE O CADASTRO NOVAMENTE --" << std::endl;
                                         cadastro.deleteUsername();
                                         cadastro.deletePassword();
-
                                         i = 3;
                                 }   
                                 else {
-                                        std::cout << "-- Cadastro Finalizado --" 
-                                                << std::endl;
+                                        std::cout << "-- Cadastro Finalizado --" << std::endl;
                                         login_file.writeonFile(username, password);
                                         i = 3;
                                 }
                         }
-
                         else  {
-                                std::cout << "-- Cadastro Finalizado --" 
-                                        << std::endl;
+                                std::cout << "-- Cadastro Finalizado --" << std::endl;
                                 login_file.writeonFile(username, password);
                                 i = 3;
                         }
-
                 }      
-
-                // cadastro.showUsernames();
-                // cadastro.showPasswords();
 
                 std::cout << "Digite 0 para continuar: ";
                 std::cin >> continue_choice;
@@ -242,9 +192,7 @@ while(loop == 0){
                 
                 loop =  1;
 
-            
                 std::cout << "Saindo..." << std::endl;
-
                 return 0;
                 break;
 
@@ -254,8 +202,7 @@ while(loop == 0){
         break;
 
         default: 
-                std::cout << "-- Numero de escolha invalido --"
-                        << std::endl;
+                std::cout << "-- Numero de escolha invalido --" << std::endl;
         break;
 
    }
