@@ -3,6 +3,7 @@
 
 #include <string>
 #include <fstream>
+#include <iostream>
 
 class Verificador {
 private: 
@@ -19,5 +20,8 @@ public:
   std::string linhaEncontrada(const std::string& palavra);
   std::string proxLinha(const std::string& palavra);
 };
+
+
+#include "verificador.cpp"
 
 #endif
