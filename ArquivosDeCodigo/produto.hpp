@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <sstream>
 
 #define MARKER "------------------------"
 
@@ -34,6 +35,7 @@ public:
 void cadastrarProduto(const std::string& nomeArquivo);
 void productRegister(const std::string& nomeArquivo);
 void removerProduto(const std::string& nomeArquivo, const std::string& nomeProduto);
+void venda(const std::string& palavraDesejada, const std::string& nomeArquivo, int numeroSubtrair);
 
 
 #include "produto.cpp"
