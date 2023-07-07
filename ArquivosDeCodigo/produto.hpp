@@ -2,6 +2,13 @@
 #define PRODUTO_HPP
 
 #include <string>
+#include <fstream>
+#include <iostream>
+#include <vector>
+
+#define MARKER "------------------------"
+
+#include "verificador.hpp"
 
 class Produto {
 private:
@@ -26,4 +33,7 @@ public:
 
 void cadastrarProduto(const std::string& nomeArquivo);
 
+void productRegister(const std::string& nomeArquivo);
+
+#include "produto.cpp"
 #endif
