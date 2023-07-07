@@ -1,6 +1,6 @@
 #include "empresa.hpp"
-// #include "produto.hpp"
-// #include "verificador.hpp"
+#include "produto.hpp"
+#include "verificador.hpp"
 
 #include <iostream>
 #include <vector>
@@ -8,6 +8,8 @@
 #include <cstdlib> // Limpar o terminal
 #include <fstream>
 
+
+#define MARKER "------------------------"
 
 int main() {
 
@@ -43,7 +45,7 @@ bool correct_password;
 
 while(loop == 0){     
 
-    std::cout << "------------------------"
+    std::cout << MARKER
             << std::endl;
     std::cout << "Escolha uma das opcoes" 
             << std::endl;
@@ -53,7 +55,7 @@ while(loop == 0){
             << std::endl;
     std::cout << "3 - Sair"
             << std::endl;
-    std::cout << "------------------------"
+    std::cout << MARKER
             << std::endl;
     
     std::cin >> choice;
@@ -69,7 +71,7 @@ while(loop == 0){
                 userexists_verify = login_file.searchonFile(username, password);
                 if (!userexists_verify){
                         while (!userexists_verify){
-                                std::cout << "------------------------"
+                                std::cout << MARKER
                                         << std::endl;
                                 std::cout << "Escolha uma das opcoes"
                                         << std::endl;
@@ -77,7 +79,7 @@ while(loop == 0){
                                         << std::endl;
                                 std::cout << "2 - Sair"
                                         << std:: endl;
-                                std::cout << "------------------------"
+                                std::cout << MARKER
                                         << std::endl;
                                 std::cin >> second_choice;
 
@@ -116,12 +118,15 @@ while(loop == 0){
                         if (correct_password == true){
                                 std::cout << "-- Voce esta logado como: " << username
                                         << std::endl;
-                        }
+
+                                productRegister(userfile_name);
+
+                        }       
 
                         if (!correct_password){
 
                                 char incorrect_password_choice;
-                                std::cout << "------------------------"
+                                std::cout << MARKER
                                         << std::endl;
                                 std::cout << "1 - Deseja digitar a senha novamente? "
                                         << std::endl;
@@ -129,7 +134,7 @@ while(loop == 0){
                                         << std::endl;
                                 std::cin >> incorrect_password_choice;
 
-                                std::cout << "------------------------"
+                                std::cout << MARKER
                                         << std::endl;
 
                                 while ((incorrect_password_choice == 's') || (incorrect_password_choice == 'S')){
@@ -142,7 +147,11 @@ while(loop == 0){
                                         if (correct_password == true){
                                                 std::cout << "-- Voce esta logado como: " << username
                                                         << std::endl;
+
+                                                productRegister(userfile_name);
+
                                                 break;
+                                                
                                         }
 
                                         if(!correct_password){
@@ -152,9 +161,10 @@ while(loop == 0){
                                                 	<< std::endl;
 
                                                 std::cin >> incorrect_password_choice;
-                                                std::cout << "------------------------"
+                                                std::cout << MARKER
                                                         << std::endl;
                                         }
+
 
                                 }
 
