@@ -4,59 +4,67 @@
 #include <vector>
 #include <string>
 #include <cstdlib> // Limpar o terminal
+#include <fstream>
 
 
 int main() {
 
 Cadastro cadastro;
+LoginFile login_file;
+
+std::string const login_filename = "login.txt";
+
+if (!login_file.isfileOpen(login_filename)){
+        std::cout << "arquivo existe" << std::endl;
+        login_file.createFile(login_filename);
+}
+
+std::string* username_ptr;
 std::string username;
+
 std::string password;
 std::string confirmation_password;
 
-unsigned escolha;
-unsigned escolha_;
+std::string teste;
+
+unsigned int escolha;
+unsigned int escolha_;
 
 unsigned loop = 0;
-    while(loop == 0){       // O uso de uma variável como parâmetro do while se deve à sintaxe do switch case
-        
-        //std::system("cls");
+while(loop == 0){     
 
-        std::cout << "------------------------"
-                << std::endl;
-        std::cout << "Escolha uma das opcoes" 
-                << std::endl;
-        std::cout << "1 - Login" 
-                << std::endl;
-        std::cout << "2 - Cadastro" 
-                << std::endl;
-        std::cout << "3 - Sair"
-                << std::endl;
-        std::cout << "------------------------"
-                << std::endl;
-        
-        std::cin >> escolha;
+    std::cout << "------------------------"
+            << std::endl;
+    std::cout << "Escolha uma das opcoes" 
+            << std::endl;
+    std::cout << "1 - Login" 
+            << std::endl;
+    std::cout << "2 - Cadastro" 
+            << std::endl;
+    std::cout << "3 - Sair"
+            << std::endl;
+    std::cout << "------------------------"
+            << std::endl;
+    
+    std::cin >> escolha;
 
-        switch(escolha){
-            case 1:
-                std::cout << "-- Fazendo login --"
-                    << std::endl;                
-            break;
-            case 2:
+    switch(escolha){
+        case 1:
+            std::cout << "-- Fazendo login --"
+                << std::endl;                
+break;
+
+        case 2:
+            
                 std::cout << "-- Fazendo cadastro --"
                         << std::endl;
 
                 std::cout << "Digite o nome de usuario: ";
                 std::cin >> username;
-                cadastro.insertUsername(username);
-                // while(!cadastro.verifyUsername(username)){
-                //     std::cout << "----- Nome de usuario invalido -----"
-                //             << std::endl;
-                //     std::cout << "Digite o nome de usuario novamente: ";
-                //     std::cin >> username;
-                //     if (cadastro.verifyUsername(username)) break;  //////////////////////
-                // }
+                username_ptr = &username;
+                login_file.searchonFile(username_ptr, username); // nesse caso nao esta salvando, verificar o motivo
 
-                //cadastro.forcedinsertUsername(username);
+                cadastro.insertUsername(username);
 
                 std::cout << "Digite a senha: ";
                 std::cin >> password;
@@ -64,34 +72,67 @@ unsigned loop = 0;
 
                 std::cout << "Confirme a senha: ";
                 std::cin >> confirmation_password;
-                if (cadastro.confirmPassword(confirmation_password) == false){
-                    std::cout << "-- SENHA ERRADA --" << std::endl;
-                    std::cout << "Realize o cadastro novamente" << std::endl;
-                    loop = 1;
-                }   else std::cout << "-- Cadastro Finalizado --" 
-                                << std::endl;
-                
 
-                cadastro.showUsernames();
-                cadastro.showPasswords();
+        for (unsigned int i = 0; i < 1; i++){    
+                if (confirmation_password != password){
 
-                std::cout << "Digite 0 para continuar: ";
-                std::cin >> escolha_;
-                if (escolha_ == 0) continue;
-                
-                loop = 1;
-                std::cout << "saindo" << std::endl;
-
-            // return 0;
-            break;
-            case 3:
-                std::cout << "saindo" << std::endl;
-                loop = 1;
-            break;
-            default: 
-                    std::cout << "Numero de escolha invalido"
+                        std::cout << "-- SENHA ERRADA --" 
                             << std::endl;
+                        std::cout << "-- CONFIRME A SENHA NOVAMENTE --" 
+                            << std::endl;
+                        std::cin >> confirmation_password;
+
+                        if (confirmation_password != password){
+                                std::cout << "-- SENHA ERRADA --"
+                                        << std::endl;
+                                std::cout << "-- REALIZE O CADASTRO NOVAMENTE --"
+                                        << std::endl;
+                        
+                                 cadastro.deleteUsername();
+                                 cadastro.deletePassword();
+
+                                i = 3;
+                        }   
+                        else {
+                                std::cout << "-- Cadastro Finalizado --" 
+                                        << std::endl;
+                                login_file.writeonFile(username, password);
+                                i = 3;
+                        }
+                }
+
+                else  {
+                        std::cout << "-- Cadastro Finalizado --" 
+                                << std::endl;
+                        login_file.writeonFile(username, password);
+                        i = 3;
+                }
+
+        }      
+
+        cadastro.showUsernames();
+        cadastro.showPasswords();
+
+        std::cout << "Digite 0 para continuar: ";
+        std::cin >> escolha_;
+        if (escolha_ != 0) loop =  1; //////// fazer caso de exceção para quando não é letra
+
+            
+        std::cout << "saindo" << std::endl;
+
+        break;
+
+        case 3:
+            std::cout << "saindo" << std::endl;
+            loop = 1;
+        break;
+
+        default: 
+                std::cout << "Numero de escolha invalido"
+                        << std::endl;
+
         }
+
     }
-    
+
 }
