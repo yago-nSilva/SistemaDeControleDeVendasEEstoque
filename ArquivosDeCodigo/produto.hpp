@@ -32,8 +32,9 @@ public:
 };
 
 void cadastrarProduto(const std::string& nomeArquivo);
-
 void productRegister(const std::string& nomeArquivo);
+void removerProduto(const std::string& nomeArquivo, const std::string& nomeProduto);
+
 
 #include "produto.cpp"
 #endif

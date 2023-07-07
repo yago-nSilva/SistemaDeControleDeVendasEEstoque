@@ -1,15 +1,9 @@
-Produto::Produto(const std::string& nome, const std::string& codigo, const std::string& categoria, double preco, const std::string& unidade, int quantidade) : _nome(nome), _codigo(codigo), _categoria(categoria), _preco(preco), _unidade(unidade), _quantidade(quantidade) {
-      
-    //   if (quantidade <= 0) {
-    //     throw std::invalid_argument ("A quantidade do produto deve ser um número inteiro                                                   positivo");
-    //   }
-    //   if (unidade != "un" && unidade != "cx") {
-    //     throw std::invalid_argument("A unidade do produto deve ser 'un' ou 'cx'.");
-    //   }
-    //   if (preco <= 0) {
-    //     throw std::invalid_argument("O preco do produto deve ser um número positivo.");
-    //   }
-    }
+#include "produto.hpp"
+
+Produto::Produto(const std::string& nome, const std::string& codigo, const std::string& categoria, double preco, const std::string& unidade, int quantidade)
+    : _nome(nome), _codigo(codigo), _categoria(categoria), _preco(preco), _unidade(unidade), _quantidade(quantidade) {
+    // ...
+}
 
 std::string Produto::getNome() const {
     return _nome;
@@ -37,10 +31,10 @@ int Produto::getQuantidade() const {
 
 void cadastrarProduto(const std::string& nomeArquivo) {
     std::fstream arquivo(nomeArquivo, std::ios::app);
-  
-    arquivo << "Codigo" << "  " << "Nome" << "  " << "Categoria" << "  " << "Preco" << "  " << "Unidade" 
-        << "  " << "Quantidade" 
-            << std::endl;
+
+    arquivo << "Codigo" << "  " << "Nome" << "  " << "Categoria" << "  " << "Preco" << "  " << "Unidade"
+        << "  " << "Quantidade"
+        << std::endl;
     arquivo << "----------------------------------" << std::endl;
 
     if (!arquivo.is_open()) {
@@ -58,7 +52,7 @@ void cadastrarProduto(const std::string& nomeArquivo) {
 
         std::cout << "Codigo do produto: ";
         std::cin >> codigo;
-        std::cin.ignore(); 
+        std::cin.ignore();
 
         std::cout << "Nome do produto: ";
         std::getline(std::cin, nome);
@@ -70,25 +64,25 @@ void cadastrarProduto(const std::string& nomeArquivo) {
         std::cin >> preco;
 
         std::cout << "Unidade (cx ou un): ";
-        std::cin.ignore(); 
+        std::cin.ignore();
         std::getline(std::cin, unidade);
-  
+
         std::cout << "Quantidade: ";
         std::cin >> quantidade;
 
         Verificador verificador(nomeArquivo);
-        while (verificador.verificar(nome) || verificador.verificar(codigo)){
-          if (verificador.verificar(codigo)) {
-            std::cout << "Codigo ja cadastrado, escreva um novo codigo: ";
-            std::cin >> codigo;
-          } else if (verificador.verificar(nome)) {
-              std::cout << "Nome ja cadastrado, escreva um novo nome.";
-              std::cin >> nome;
-          } 
+        while (verificador.verificar(nome) || verificador.verificar(codigo)) {
+            if (verificador.verificar(codigo)) {
+                std::cout << "Codigo ja cadastrado, escreva um novo codigo: ";
+                std::cin >> codigo;
+            } else if (verificador.verificar(nome)) {
+                std::cout << "Nome ja cadastrado, escreva um novo nome.";
+                std::cin >> nome;
+            }
         }
-      
+
         produtos.emplace_back(nome, codigo, categoria, preco, unidade, quantidade);
-      
+
         std::cout << "Deseja cadastrar outro produto? (S/N): " << std::endl;
         std::cin >> continuar;
 
@@ -96,8 +90,8 @@ void cadastrarProduto(const std::string& nomeArquivo) {
 
     for (const Produto& produto : produtos) {
         arquivo << produto.getCodigo() << "   |" << produto.getNome() << "   |" << produto.getCategoria()
-                << "   |" << "R$" << produto.getPreco() << "   |" << produto.getUnidade() << "   |" << produto.getQuantidade()
-                    << std::endl;
+            << "   |" << "R$" << produto.getPreco() << "   |" << produto.getUnidade() << "   |" << produto.getQuantidade()
+            << std::endl;
         arquivo << "----------------------------------" << std::endl;
     }
 
@@ -106,28 +100,55 @@ void cadastrarProduto(const std::string& nomeArquivo) {
     std::cout << "Cadastro de produtos concluído." << std::endl;
 }
 
-void productRegister(const std::string& nomeArquivo){
-    while (true) {
-        std::cout << MARKER
-                << std::endl;
-        std::cout << "Selecione uma opcao:" 
-                << std::endl;
-        std::cout << "1. Cadastrar produto"
-                    << std::endl;
-        std::cout << "2. Verificar produto em estoque" 
-                << std::endl;
-        std::cout << "3. Mostrar estoque" 
-                << std::endl;
-        std::cout << "4. Voltar para pagina inicial" 
-                << std::endl;
-        std::cout << MARKER
-                << std::endl;
-        
+void removerProduto(const std::string& nomeArquivo, const std::string& nomeProduto) {
+    std::ifstream arquivo(nomeArquivo);
+    if (!arquivo.is_open()) {
+        std::cout << "Erro ao abrir o arquivo." << std::endl;
+        return;
+    }
+
+    std::vector<std::string> linhas;
+    std::string linha;
+
+    while (std::getline(arquivo, linha)) {
+        if (linha.find(nomeProduto) == std::string::npos) {
+            linhas.push_back(linha);
+        }
+    }
+
+    arquivo.close();
+
+    std::ofstream arquivoAtualizado(nomeArquivo);
+    if (!arquivoAtualizado.is_open()) {
+        std::cout << "Erro ao abrir o arquivo." << std::endl;
+        return;
+    }
+
+    for (const std::string& linhaAtualizada : linhas) {
+        arquivoAtualizado << linhaAtualizada << std::endl;
+    }
+
+    arquivoAtualizado.close();
+
+    std::cout << "Produto removido com sucesso." << std::endl;
+}
+
+void productRegister(const std::string& nomeArquivo) {
+    while (true) {{
+        std::cout << MARKER << std::endl;
+        std::cout << "Selecione uma opcao:" << std::endl;
+        std::cout << "1. Cadastrar produto" << std::endl;
+        std::cout << "2. Verificar produto em estoque" << std::endl;
+        std::cout << "3. Mostrar estoque" << std::endl;
+        std::cout << "4. Remover produto" << std::endl;
+        std::cout << "5. Voltar para pagina inicial" << std::endl;
+        std::cout << MARKER << std::endl;
+
         int opcao;
         std::cin >> opcao;
 
         if (opcao == 1) {
-        cadastrarProduto(nomeArquivo);
+            cadastrarProduto(nomeArquivo);
         } else if (opcao == 2) {
         std::cout << "Digite o codigo do produto a ser verificado: ";
         std::string nome;
@@ -157,19 +178,24 @@ void productRegister(const std::string& nomeArquivo){
                 } else {
                         std::cout << "Nao ha registro de estoque do produto informado." << std::endl;
                 }
-        } else {
-                std::cout << "Produto nao encontrado." << std::endl;
         }
+            
         } else if (opcao == 3) {
-                std::string linha;
-                std::ifstream arquivo(nomeArquivo);
-        while(std::getline(arquivo, linha)){
-                std::cout << linha << std::endl;
-        }
+            std::string linha;
+            std::ifstream arquivo(nomeArquivo);
+                while(std::getline(arquivo, linha)){
+            std::cout << linha << std::endl;
+        }     
         } else if (opcao == 4) {
-                break; 
+            std::cout << "Digite o nome do produto a ser removido: ";
+            std::string nomeProduto;
+            std::cin.ignore();
+            std::getline(std::cin, nomeProduto);
+            removerProduto(nomeArquivo, nomeProduto);
+        } else if (opcao == 5) {
+            break;
         } else {
-                std::cout << "Opcao invalida. Tente novamente." << std::endl;
+            std::cout << "Opcao invalida. Tente novamente." << std::endl;
         }
-}
-}
+    }
+}}
