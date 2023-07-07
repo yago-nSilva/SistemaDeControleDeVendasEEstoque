@@ -178,7 +178,8 @@ public:
 
     _userfile.open(namefile, std::ios::app);
 
-    _userfile << "Usuário: " << username;
+    _userfile << "User: " << username;
+    _userfile << std::endl;
 
     _userfile.close();
 
