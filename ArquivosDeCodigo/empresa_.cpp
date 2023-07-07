@@ -35,16 +35,27 @@ void Cadastro::deletePassword(){
   Password.erase(Password.end() - 1);
 }
 
-std::string FileAux::turnintoNamefile(std::string name){
+void FileAux::turnintoNamefile(std::string* pointerto_namefile, std::string name){
   
-  std::string namefile;
+  std::string namefile = name + ".txt";
 
-  namefile = name + ".txt";
+  *pointerto_namefile = name + ".txt";
 
-  return name;
 }
 
 bool LoginFile::isfileOpen(std::string const namefile){
-  return _file.good();
+  
+  std::fstream file(namefile);
+
+  return file.is_open();
 }
+
+bool UserFile::doesuserfileExists(std::string const namefile){
+
+  std::fstream file(namefile);
+
+  return file.is_open();
+}
+
+
 
