@@ -1,4 +1,6 @@
 #include "produto.hpp"
+#include <sstream>
+
 
 Produto::Produto(const std::string& nome, const std::string& codigo, const std::string& categoria, double preco, const std::string& unidade, int quantidade)
     : _nome(nome), _codigo(codigo), _categoria(categoria), _preco(preco), _unidade(unidade), _quantidade(quantidade) {
@@ -133,6 +135,70 @@ void removerProduto(const std::string& nomeArquivo, const std::string& nomeProdu
     std::cout << "Produto removido com sucesso." << std::endl;
 }
 
+void venda(const std::string& palavraDesejada, const std::string& nomeArquivo, int numeroSubtrair) {
+    std::ifstream arquivoIn(nomeArquivo); // Abrir o arquivo de entrada
+    
+    if (!arquivoIn.is_open()) {
+        std::cout << "Erro ao abrir o arquivo de entrada." << std::endl;
+        return;
+    }
+    
+    std::ofstream arquivoOut("temp.txt"); // Abrir um arquivo temporário para escrever
+    
+    if (!arquivoOut.is_open()) {
+        std::cout << "Erro ao abrir o arquivo temporário." << std::endl;
+        return;
+    }
+    
+    std::string linha;
+    
+    while (std::getline(arquivoIn, linha)) {
+        std::istringstream iss(linha);
+        std::string palavra;
+        int ultimoNumero = 0;
+        
+        // Procura pela palavra desejada na linha
+        size_t pos = linha.find(palavraDesejada);
+        
+        if (pos != std::string::npos) {
+            // Lê o último número da linha
+            while (iss >> palavra) {
+                std::istringstream issNumero(palavra);
+                int numero;
+                
+                if (issNumero >> numero) {
+                    ultimoNumero = numero;
+                    std::cout << numero << std::endl;
+                }
+            }
+            
+            if (ultimoNumero >= numeroSubtrair){
+            // Subtrai o número fornecido do último número
+            ultimoNumero -= numeroSubtrair;
+            
+            // Substitui o último número na linha
+            std::string novoUltimoNumero = std::to_string(ultimoNumero);
+            linha.replace(pos, palavraDesejada.length(), novoUltimoNumero);
+            }else {
+                std::cout << "Quantidade em estoque insuficiente." << std::endl;
+                return;
+            }
+        }
+        
+        // Escreve a linha no arquivo temporário
+        arquivoOut << linha << std::endl;
+    }
+    
+    arquivoIn.close(); // Fechar o arquivo de entrada
+    arquivoOut.close(); // Fechar o arquivo temporari
+    
+    // Substitui o arquivo original pelo arquivo temporario
+    std::remove(nomeArquivo.c_str());
+    std::rename("temp.txt", nomeArquivo.c_str());
+    
+    std::cout << "Venda de " << numeroSubtrair << " " << palavraDesejada << " realizada com sucesso" << std::endl;
+}
+
 void productRegister(const std::string& nomeArquivo) {
     while (true) {{
         std::cout << MARKER << std::endl;
@@ -141,7 +207,8 @@ void productRegister(const std::string& nomeArquivo) {
         std::cout << "2. Verificar produto em estoque" << std::endl;
         std::cout << "3. Mostrar estoque" << std::endl;
         std::cout << "4. Remover produto" << std::endl;
-        std::cout << "5. Voltar para pagina inicial" << std::endl;
+        std::cout << "5. Vender produto" << std::endl;
+        std::cout << "6. Voltar para pagina inicial" << std::endl;
         std::cout << MARKER << std::endl;
 
         int opcao;
@@ -193,6 +260,18 @@ void productRegister(const std::string& nomeArquivo) {
             std::getline(std::cin, nomeProduto);
             removerProduto(nomeArquivo, nomeProduto);
         } else if (opcao == 5) {
+            std::cout << "Digite a o produto a ser vendido: ";
+            std::string nomeProduto;
+            std::cin.ignore();
+            std::getline(std::cin, nomeProduto);
+            std::cout << std::endl;
+            std::cout << "Digite a quantidade a ser vendida: ";
+            int quantidade;
+            std::cin >> quantidade;
+            std::cout << std::endl;
+            venda(nomeProduto, nomeArquivo, quantidade);
+    
+        }else if (opcao == 6) {
             break;
         } else {
             std::cout << "Opcao invalida. Tente novamente." << std::endl;
