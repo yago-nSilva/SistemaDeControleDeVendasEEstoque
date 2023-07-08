@@ -22,6 +22,7 @@ aprendendo a estruturar e organizar o código de forma eficiente. Pensando no la
 operações de negócios, aumentar a eficiência e evitar erros comuns no controle manual de estoque e vendas.
 
 # Interface 
+Na pasta do projeto foi incluído um pequeno video com o propósito específico de demonstrar todas as funcionalidades e o funcionamento completo do sistema. Ele foi desenvolvido para fornecer uma visão clara e abrangente do projeto em ação, permitindo uma facil compreensão do que foi feito. 
 
 # Tecnologias Utilizadas 
 - C++
