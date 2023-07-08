@@ -33,9 +33,11 @@ operações de negócios, aumentar a eficiência e evitar erros comuns no contro
 git clone https://github.com/yago-nSilva/SistemaDeControleDeVendasEEstoque
 
 # entrar na pasta do projeto 
-
+cd ArquivosDeCodigo
 
 # executar o projeto
+g++ main.cpp -o Nome_Executavel
+.\NomeExecutavel
 
 ```
 
